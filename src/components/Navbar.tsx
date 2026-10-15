@@ -53,7 +53,7 @@ export function Navbar({ onHome }: { onHome: boolean }) {
   return (
     <header className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
       <div className="wrap nav__bar">
-        <a className="nav__brand" href="#top" onClick={() => setOpen(false)} aria-label="David Muumbi Mbuvi, back to top">
+        <a className="nav__brand" href="/#top" onClick={() => setOpen(false)} aria-label="David Muumbi Mbuvi, back to top">
           <span className="nav__mark" aria-hidden="true">
             DM
           </span>
@@ -64,7 +64,7 @@ export function Navbar({ onHome }: { onHome: boolean }) {
           {links.map((l) => (
             <a
               key={l.id}
-              href={`#${l.id}`}
+              href={`/#${l.id}`}
               className={active === l.id ? 'is-active' : undefined}
               aria-current={active === l.id ? 'true' : undefined}
               onClick={() => setOpen(false)}

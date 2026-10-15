@@ -27,13 +27,13 @@ export function Hero() {
           <p className="hero__lead">{heroCopy}</p>
           <p className="hero__tags mono-label">FULL-STACK DEVELOPMENT · SYSTEMS THINKING · PRACTICAL ENGINEERING</p>
           <div className="hero__cta">
-            <a className="btn btn--primary" href="#projects">
+            <a className="btn btn--primary" href="/#projects">
               Explore My Projects <IconArrowRight />
             </a>
             <Ext className="btn" href={GITHUB_URL}>
               <IconGithub /> View GitHub
             </Ext>
-            <a className="btn" href="#contact">
+            <a className="btn" href="/#contact">
               <IconMail /> Contact Me
             </a>
           </div>

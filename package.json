@@ -1,12 +1,12 @@
 {
   "name": "david-mbuvi-portfolio",
   "private": true,
-  "version": "1.0.0",
-  "description": "Personal engineering portfolio for David Muumbi Mbuvi",
+  "version": "1.1.0",
+  "description": "Personal engineering portfolio for David Mbuvi (Mbuvi Tech)",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
   },
@@ -19,6 +19,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "esbuild": "^0.21.5",
     "typescript": "^5.6.3",
     "vite": "^5.4.11"
   },

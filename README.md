@@ -23,9 +23,7 @@ Fourth year, BSc Computer Science, Moi University
 
 [**GitHub**](https://github.com/cheekydavy) &nbsp;·&nbsp; [**Email**](mailto:mbuvidavid26@gmail.com) &nbsp;·&nbsp; [**Phone**](tel:+254746440595)
 
-<!-- Add your live link here after deploying:
-[**🌐 Live portfolio**](https://your-domain.example)
--->
+[**🌐 Live portfolio**](https://portfolio.kensync.co.ke)
 
 <br />
 
@@ -117,7 +115,8 @@ flowchart LR
 | Build | Vite 5 | Instant dev server, small static output |
 | Diagrams | Mermaid 11 | Renders the repository-derived diagrams |
 | Styling | Hand-written CSS | One small design system, no framework overhead |
-| Routing | Hash routes (`#/projects/pos`) | Deploys on any static host with no rewrite rules |
+| Routing | Real URLs (`/projects/pos`) | Each project has its own indexable page |
+| SEO | Build-time pre-rendering | Unique title, description, canonical, structured data and readable content per URL, plus `sitemap.xml` |
 
 ---
 
@@ -141,7 +140,7 @@ npm run dev          # http://localhost:5173
 
 ## ✦ Deploy
 
-It is a static site, so any static host works. `base: './'` is set in `vite.config.ts` and routing uses `#`, so it also works under a sub-path.
+It is a static site, so any static host works. Each URL is pre-rendered to its own HTML file by `scripts/prerender.mjs` (run automatically by `npm run build`), so no rewrite rules are needed. `base` is `'/'`, so it must be served from the root of a domain or subdomain. Set `SITE_URL` at build time if the address ever changes (default: `https://portfolio.kensync.co.ke`).
 
 | Host | Settings |
 | :-- | :-- |
@@ -151,12 +150,14 @@ It is a static site, so any static host works. `base: './'` is set in `vite.conf
 | **GitHub Pages** | Enable *Settings → Pages → GitHub Actions*; the workflow in `.github/workflows/deploy.yml` does the rest |
 
 <details>
-<summary><b>After going live</b></summary>
+<summary><b>SEO checklist after going live</b></summary>
 
 <br/>
 
-- Add `<link rel="canonical" href="https://your-domain/">` and an `og:url` tag to `index.html`.
-- Add a 1200×630 image at `public/og.png` and reference it with an `og:image` tag so link previews look good on WhatsApp, LinkedIn and X.
+- Canonical URLs, Open Graph/Twitter tags, structured data, `sitemap.xml` and `robots.txt` are generated automatically.
+- Add `public/og.png` (1200×630) and `public/apple-touch-icon.png` (180×180); the tags already point to them.
+- Verify the site in Google Search Console and Bing Webmaster Tools, then submit `https://portfolio.kensync.co.ke/sitemap.xml`.
+- Link to the site from your GitHub profile and other profiles using the same names (David Mbuvi, Mbuvi Tech).
 - Commit `package-lock.json` for reproducible installs, and switch the Pages workflow from `npm install` to `npm ci`.
 
 </details>

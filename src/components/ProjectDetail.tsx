@@ -15,7 +15,7 @@ export function ProjectDetail({ project }: { project: Project }) {
     <main className="detail">
       <section className="detail__hero">
         <div className="wrap">
-          <a className="back" href="#projects">
+          <a className="back" href="/#projects">
             <IconArrowLeft /> All projects
           </a>
           <p className="mono-label detail__ref">

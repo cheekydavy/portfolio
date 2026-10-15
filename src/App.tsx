@@ -9,7 +9,7 @@ import { ProjectDetail } from './components/ProjectDetail';
 import { Projects } from './components/Projects';
 import { Skills } from './components/Skills';
 import { getProject } from './data/projects';
-import { hrefs, useRoute } from './hooks/useRoute';
+import { hrefs, navigate, useRoute } from './hooks/useRoute';
 import type { Route } from './hooks/useRoute';
 
 // Mermaid (and the explorer UI) only download when an architecture view is opened.
@@ -41,7 +41,7 @@ export default function App() {
 
   const closeExplorer = useCallback(() => {
     const b = baseRef.current;
-    window.location.hash = b && b.name === 'project' ? hrefs.project(b.slug) : hrefs.home;
+    navigate(b && b.name === 'project' ? hrefs.project(b.slug) : hrefs.home);
   }, []);
 
   // Scroll handling: new page -> top; in-page anchors -> the section (after the home page has rendered).
@@ -50,7 +50,7 @@ export default function App() {
     if (route.name === 'architecture') return;
     const key = route.name === 'project' ? `project:${route.slug}` : 'home';
     const id = window.location.hash.slice(1);
-    const isAnchor = route.name === 'home' && id !== '' && !id.startsWith('/');
+    const isAnchor = route.name === 'home' && id !== '';
     if (isAnchor) {
       document.getElementById(id)?.scrollIntoView();
     } else if (key !== lastKey.current) {
