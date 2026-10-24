@@ -43,14 +43,14 @@ The site is a dark, blueprint-styled React app with no UI framework, no backend 
 
 | | Project | Status | Built with | Repo |
 | :-: | :-- | :-- | :-- | :-: |
-| 🧾 | **Integrated POS & Business Communication Platform**<br/><sub>Sales, inventory, purchasing, reports, staff roles and M-Pesa payments</sub> | 🟠 **Active development**<br/><sub>M-Pesa integration completed; communication module remaining</sub> | TypeScript · Prisma · PostgreSQL · Safaricom Daraja | [`pos`](https://github.com/cheekydavy/pos) |
+| 🧾 | **Integrated POS & Business Communication Platform**<br/><sub>Sales, inventory, purchasing, customers, reporting, branches, role-based access and M-Pesa payments</sub> | 🟢 Complete | Next.js · Express · PostgreSQL · Prisma · Safaricom Daraja · WhatsApp Cloud API | — |
 | 📚 | **SmartStudy**<br/><sub>Study sessions, AI-assisted notes, quizzes and progress tracking</sub> | 🟢 Complete | JavaScript · Node.js · Express · MongoDB · Groq API | [`smartstudy`](https://github.com/cheekydavy/smartstudy) |
 | 📡 | **CampusMesh**<br/><sub>Exploring offline campus messaging between nearby devices</sub> | 🟢 Complete | Kotlin · Android · Room | [`campusmesh`](https://github.com/cheekydavy/campusmesh) |
 | 💬 | **Mbuvi MD**<br/><sub>Modular WhatsApp automation with a command registry and plugins</sub> | 🟢 Complete | Node.js · PostgreSQL · WhatsApp | [`mbuvimd-db`](https://github.com/cheekydavy/mbuvimd-db) |
 | ✈️ | **Flight Management & Booking System**<br/><sub>Flights, bookings, crew matching, JWT auth and reports</sub> | 🟢 Complete | React · Java · PostgreSQL | [`kenya-airways`](https://github.com/cheekydavy/kenya-airways) |
 
 > [!NOTE]
-> The POS is the flagship. Its M-Pesa integration is complete; the integrated communication module (WhatsApp and other social platforms) is **planned and not yet implemented**. The flight project is an independent portfolio piece and is not affiliated with Kenya Airways.
+> The POS is the flagship project. The flight project is an independent portfolio piece and is not affiliated with Kenya Airways.
 
 ---
 
@@ -205,7 +205,7 @@ If a new diagram introduces a new colour class, add it to `src/data/tones.ts` an
 
 This site only claims what the repositories and my background support.
 
-- ✅ The POS is labelled **Active Development**, with M-Pesa completed and the communication module clearly marked as planned.
+- ✅ All five projects are labelled **Complete**, with no deployment, user or performance claims.
 - ✅ Skills are grouped tags, never percentages. A cyan dot appears only where a technology shows up in a featured project's documented architecture.
 - ✅ Diagrams show structure, not proof that every feature is deployed.
 - ✅ No stars, user counts, client names, awards or testimonials are invented.

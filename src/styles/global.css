@@ -372,6 +372,7 @@ section[id] { scroll-margin-top: 72px; }
 .inspector h3 { font-size: 1.25rem; margin: 0.7rem 0 0.3rem; }
 .inspector__file { display: block; color: var(--accent); margin-bottom: 0.4rem; }
 .inspector__layer { margin: 0 0 0.6rem !important; color: var(--muted) !important; font-size: 0.82rem !important; }
+.side__block .inspector__note { color: #c3cfdb; font-size: 0.9rem; margin: 0 0 0.8rem; }
 .inspector h4 { margin: 0.9rem 0 0.4rem; }
 .inspector__links { list-style: none; display: grid; gap: 0.35rem; font-size: 0.84rem; margin-bottom: 0.6rem; }
 .inspector__links span { color: var(--dim); font-family: var(--font-mono); font-size: 0.74rem; }

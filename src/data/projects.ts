@@ -32,8 +32,14 @@ export interface Project {
   engineeringValue: string[];
   stack: { group: string; items: string[] }[];
   layers: Layer[];
-  repo: string;
-  repoName: string; // GitHub repository name, for the live-metadata lookup
+  /** Repository URL. Omit to show no repository link or source references for this project. */
+  repo?: string;
+  /** GitHub repository name for the live-metadata lookup (only used when `repo` is set). */
+  repoName?: string;
+  /** Short responsibilities per diagram node id, shown in the explorer's inspector. */
+  nodeNotes?: Record<string, string>;
+  /** Overrides the default provenance line shown with the diagram explanation. */
+  diagramNote?: string;
   architectureNote: string[];
   legend: LegendEntry[];
   keySources: SourceLink[];
@@ -53,62 +59,96 @@ export const projects: Project[] = [
     ref: 'PRJ-01',
     name: 'Integrated POS & Business Communication Platform',
     shortName: 'POS Platform',
-    tagline: 'Sales, inventory, payments and — next — customer conversations in one connected platform.',
-    status: {
-      label: 'Active Development — M-Pesa Integration Completed; Communication Module Remaining',
-      kind: 'active',
-    },
+    tagline: 'Sales, inventory, M-Pesa payments and customer messaging in one connected platform.',
+    status: { label: 'Complete', kind: 'complete' },
     summary:
-      'A point-of-sale and business-operations platform: checkout, inventory, purchasing, customers, reports, staff roles, and a completed Safaricom Daraja M-Pesa integration.',
+      'An integrated point-of-sale and business management platform combining sales, inventory, purchasing, customer and supplier management, reporting, branch operations, role-based access control and M-Pesa payment integration.',
     overview: [
-      'This is an ongoing software product with a substantial implementation behind it. The documented architecture covers a web application (POS checkout, customer records, reports, inventory, purchasing and an M-Pesa payment interface), an API layer, a set of business-operation services, platform services for authentication and access, and PostgreSQL persistence through Prisma.',
-      'The M-Pesa integration with Safaricom Daraja is complete according to the current project status. The next major module is an integrated communication module: bringing WhatsApp and other social platforms into the POS so a business can manage sales, stock, payments and customer communication in one operational system. That module is planned and not yet built.',
+      'Retail businesses often run sales, stock, supplier orders and customer credit in separate tools, so a balance goes untracked or a shelf count drifts from reality. This platform was built around a problem I met during my industrial attachment: customers who don’t pay in full, and balances that become impossible to track and collect.',
+      'It is an integrated point-of-sale and business management platform: checkout with split payments and receipts, product and inventory management on an append-only stock ledger, purchasing and supplier records, customers and receivables, branch operations, reporting, and role-based access control across the whole system. A Next.js web app talks to a modular Express API, which persists everything to PostgreSQL through Prisma.',
+      'The M-Pesa integration with Safaricom Daraja is complete: staff send an STK Push from checkout or against an outstanding balance, and a payment is applied to a sale only once Safaricom confirms it. A shared WhatsApp inbox built on Meta’s Cloud API connects customer conversations to customer records and invoices.',
     ],
     engineeringValue: [
-      'Service-based business logic: each domain (sales, catalog, inventory, customers, purchasing, suppliers, reports, M-Pesa) lives in its own service behind the API.',
-      'External payment integration: a dedicated M-Pesa controller and service, transaction persistence, and a Safaricom callback flow.',
-      'Access control as a first-class concern: authentication, staff accounts, and roles and permissions are separate platform services.',
-      'A single relational model (PostgreSQL via Prisma) shared across sales, stock, purchasing and payments.',
+      'Append-only inventory ledger: every stock change is an immutable movement, written in the same database transaction as the sale or purchase that caused it.',
+      'Money handled as exact decimals, with price and tax copied onto each sale line so later catalogue changes never rewrite history.',
+      'Exactly-once M-Pesa settlement: a payment is marked applied and recorded on the sale in one transaction, with three independent ways to confirm it.',
+      'Permissions enforced on the server for every endpoint, with an audit log of mutating actions and credential-redacted request logs.',
+      'A communications module kept separate from the POS core, connected only through customer links and pinned invoices.',
     ],
     stack: [
-      { group: 'Client', items: ['TypeScript', 'TSX web pages'] },
-      { group: 'API', items: ['TypeScript API application', 'Service-based modules'] },
+      { group: 'Web', items: ['Next.js 14', 'React 18', 'TypeScript', 'Tailwind CSS'] },
+      { group: 'API', items: ['Node.js', 'Express', 'TypeScript', 'Zod validation'] },
       { group: 'Data', items: ['PostgreSQL', 'Prisma'] },
-      { group: 'Integration', items: ['Safaricom Daraja (M-Pesa)'] },
+      { group: 'Security', items: ['argon2 password hashing', 'JWT access and refresh tokens', 'Helmet'] },
+      { group: 'Integrations', items: ['Safaricom Daraja (M-Pesa STK Push)', 'Meta WhatsApp Cloud API'] },
+      { group: 'Storage', items: ['S3-compatible object storage'] },
+      { group: 'Tooling', items: ['pnpm workspaces monorepo', 'Vitest', 'Pino logging'] },
     ],
     layers: [
-      { name: 'Web app', tone: 'toneBlue', items: ['POS checkout', 'Customer records', 'Reports', 'Inventory', 'Purchasing', 'M-Pesa'] },
-      { name: 'API workflows', tone: 'toneAmber', items: ['API application', 'Sales routes', 'Sales controller', 'M-Pesa controller'] },
+      { name: 'Operator interface', tone: 'toneBlue', items: ['POS checkout', 'Message inbox', 'Reports screens', 'Back-office screens'] },
       {
-        name: 'Business operations',
-        tone: 'toneMint',
-        items: ['Sales', 'Product catalog', 'Inventory', 'Customers', 'Purchasing', 'Suppliers', 'Reports', 'M-Pesa service'],
+        name: 'Sales and finance',
+        tone: 'toneAmber',
+        items: ['Sales and receivables', 'Sales API handlers', 'M-Pesa payments', 'Daraja client', 'Reporting services', 'General reports'],
       },
-      { name: 'Platform services', tone: 'toneRose', items: ['Authentication', 'Staff accounts', 'Roles & access', 'Prisma client'] },
-      { name: 'Data & external', tone: 'toneIndigo', items: ['PostgreSQL', 'Safaricom Daraja'] },
-      { name: 'Communication module', tone: 'toneNeutral', items: ['WhatsApp and other social platforms'], planned: true },
+      {
+        name: 'Catalog and operations',
+        tone: 'toneMint',
+        items: ['Product catalog', 'Inventory ledger', 'Purchase orders', 'Customer records', 'Branch management', 'Supplier records'],
+      },
+      { name: 'Customer communications', tone: 'toneTeal', items: ['WhatsApp messaging', 'Attachment storage'] },
+      {
+        name: 'API platform',
+        tone: 'toneRose',
+        items: ['Authentication', 'Roles and permissions', 'User management', 'PostgreSQL through Prisma', 'Audit logging', 'Runtime configuration', 'Pagination utilities', 'API logger'],
+      },
+      { name: 'External services', tone: 'toneIndigo', items: ['Safaricom Daraja', 'Meta WhatsApp'] },
     ],
-    repo: 'https://github.com/cheekydavy/pos',
-    repoName: 'pos',
+    diagramNote: 'Mapped from the repository structure and checked against the source code.',
     architectureNote: [
-      'Staff work through the web app. Every page (checkout, records, reports, inventory, purchasing, M-Pesa) talks to a single API application, which mounts the sales routes and the M-Pesa controller and serves the remaining domains.',
-      'Sales requests flow routes → controller → sales service. M-Pesa requests flow through their own controller and service, and Safaricom Daraja calls back into the M-Pesa controller. Business services persist to PostgreSQL; the Prisma client is the connection point.',
+      'Staff work through the operator interface: POS checkout, the message inbox, report screens and the back-office screens. Every screen talks to one API, organised into modules for sales and finance, catalog and operations, customer communications and shared platform services.',
+      'A sale flows from checkout through the sales handlers to the sales service, which deducts stock from the inventory ledger and records payments. M-Pesa payments go through their own service and Daraja client, and a confirmed payment is applied back to its sale. The WhatsApp module exchanges messages with Meta, stores attachments, and links conversations to customers and invoices. Everything persists to PostgreSQL through Prisma, with authentication, permissions and audit logging shared across the API.',
     ],
     legend: [
-      { tone: 'toneBlue', label: 'Web client', note: 'Staff user and web pages' },
-      { tone: 'toneAmber', label: 'API & persistence', note: 'API app, routes, controllers, PostgreSQL' },
-      { tone: 'toneMint', label: 'Business operations', note: 'Domain services' },
-      { tone: 'toneRose', label: 'Platform services', note: 'Auth, staff, roles, Prisma' },
-      { tone: 'toneIndigo', label: 'External service', note: 'Safaricom Daraja' },
+      { tone: 'toneBlue', label: 'Operator interface', note: 'Staff user and screens' },
+      { tone: 'toneAmber', label: 'Sales & finance', note: 'Sales, M-Pesa, reporting' },
+      { tone: 'toneMint', label: 'Catalog & operations', note: 'Products, stock, purchasing, people, branches' },
+      { tone: 'toneTeal', label: 'Customer communications', note: 'WhatsApp messaging and attachments' },
+      { tone: 'toneRose', label: 'API platform', note: 'Auth, roles, audit, config, PostgreSQL' },
+      { tone: 'toneIndigo', label: 'External services', note: 'Safaricom Daraja and Meta WhatsApp' },
     ],
-    keySources: [
-      { label: 'API application · app.ts', url: 'https://github.com/cheekydavy/pos/blob/main/apps/api/src/app.ts' },
-      { label: 'Sales service', url: 'https://github.com/cheekydavy/pos/blob/main/apps/api/src/modules/sales/sales.service.ts' },
-      { label: 'M-Pesa controller', url: 'https://github.com/cheekydavy/pos/blob/main/apps/api/src/modules/mpesa/mpesa.controller.ts' },
-      { label: 'M-Pesa service', url: 'https://github.com/cheekydavy/pos/blob/main/apps/api/src/modules/mpesa/mpesa.service.ts' },
-      { label: 'Authentication service', url: 'https://github.com/cheekydavy/pos/blob/main/apps/api/src/modules/auth/auth.service.ts' },
-      { label: 'POS checkout page', url: 'https://github.com/cheekydavy/pos/blob/main/apps/web/src/app/pos/page.tsx' },
-    ],
+    keySources: [],
+    nodeNotes: {
+      node_staff: 'Staff using the system, limited by their role\u2019s permissions.',
+      node_pos: 'Front-counter screen: build a cart, choose a branch and optional customer, take split payments or pay with M-Pesa, and print a receipt.',
+      node_inbox: 'Shared staff inbox for WhatsApp conversations: assign, reply, add internal notes, link a customer and pin invoices.',
+      node_reports_ui: 'Reporting screens with date and branch filters, CSV export and print.',
+      node_backoffice: 'Screens for products, inventory, purchase orders, customers, suppliers, branches, receivables, staff and roles.',
+      node_sales_service: 'Creates and completes sales in one transaction: deducts stock, records payments, requires a customer for credit sales, and tracks receivables.',
+      node_sales_controller: 'Validates sales requests and calls the sales service: create, checkout, void, discard a draft, collect a payment.',
+      node_mpesa_service: 'Starts STK Push payments, tracks each attempt, and applies a confirmed payment to its sale exactly once, confirmed by callback, status polling and a background reconciler.',
+      node_mpesa_client: 'Talks to Safaricom Daraja: access token, STK Push request and payment status query, with Kenyan phone-number normalisation.',
+      node_reports_sales: 'Sales overview, itemised sales, product performance and receivables aging, using Nairobi-time day boundaries.',
+      node_reports_general: 'Inventory valuation, low-stock and purchase-spend reports.',
+      node_products: 'Product catalogue with SKU, prices, tax rate and reorder level.',
+      node_inventory: 'Append-only stock ledger with a cached balance per branch; corrections are reversing entries, never edits.',
+      node_purchasing: 'Purchase orders from draft to ordered to received, with partial receiving that posts stock movements.',
+      node_customers: 'Customer records, including the phone number used to match WhatsApp conversations.',
+      node_branches: 'Branches that scope stock and generate sequential invoice and purchase-order numbers.',
+      node_suppliers: 'Supplier records used by purchase orders and spend reports.',
+      node_whatsapp: 'Shared WhatsApp inbox on Meta\u2019s Cloud API: signed webhooks saved before processing, duplicate protection, customer matching, internal notes and assignment.',
+      node_storage: 'Storage for customer attachments, served only through an authenticated endpoint.',
+      node_auth: 'Login with argon2-hashed passwords, short-lived access tokens and revocable refresh tokens.',
+      node_roles: 'Roles and permission sets enforced on the server for every endpoint; custom roles can be created.',
+      node_users: 'Staff accounts: create, change role, deactivate and reset passwords. Deactivation revokes sessions.',
+      node_database: 'The single PostgreSQL database, accessed through the Prisma client with versioned migrations.',
+      node_audit: 'Append-only record of who did what and when for mutating actions.',
+      node_env: 'Validated runtime configuration; the API refuses to start with missing or invalid settings.',
+      node_pagination: 'Shared helpers that cap and standardise page sizes on list endpoints.',
+      node_logger: 'Structured Pino logging that redacts credential-looking fields.',
+      node_safaricom: 'Safaricom\u2019s Daraja API, which sends the STK Push prompt to the customer\u2019s phone and reports the result.',
+      node_meta: 'Meta\u2019s WhatsApp Cloud API, which delivers customer messages by signed webhook and carries replies.',
+    },
     loadDiagram: () => import('../diagrams/pos.mmd?raw'),
   },
 

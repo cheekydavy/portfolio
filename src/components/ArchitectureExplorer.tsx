@@ -348,9 +348,11 @@ export default function ArchitectureExplorer({ project, onClose }: Props) {
           <h2 id="explorer-title">{project.name}</h2>
         </div>
         <div className="explorer__head-actions">
-          <Ext className="btn btn--sm" href={project.repo}>
-            <IconGithub /> <span className="hide-sm">Repository</span>
-          </Ext>
+          {project.repo ? (
+            <Ext className="btn btn--sm" href={project.repo}>
+              <IconGithub /> <span className="hide-sm">Repository</span>
+            </Ext>
+          ) : null}
           <button ref={closeRef} type="button" className="btn btn--sm btn--primary" onClick={() => onCloseRef.current()}>
             <IconClose /> Close
           </button>
@@ -395,12 +397,13 @@ export default function ArchitectureExplorer({ project, onClose }: Props) {
             {status === 'error' ? (
               <div className="stage__msg stage__msg--error" role="alert">
                 <p>
-                  <strong>The diagram could not be rendered here.</strong> The component list and source files are still available, and
-                  the full repository is one click away.
+                  <strong>The diagram could not be rendered here.</strong> The component list is still available below.
                 </p>
-                <Ext className="btn btn--primary" href={project.repo}>
-                  <IconGithub /> Open {project.repoName} on GitHub <IconArrowUpRight />
-                </Ext>
+                {project.repo ? (
+                  <Ext className="btn btn--primary" href={project.repo}>
+                    <IconGithub /> Open {project.repoName ?? 'the repository'} on GitHub <IconArrowUpRight />
+                  </Ext>
+                ) : null}
                 <div className="stage__fallback">
                   <LayerStack layers={project.layers} compact />
                 </div>
@@ -445,7 +448,8 @@ export default function ArchitectureExplorer({ project, onClose }: Props) {
               <p key={p}>{p}</p>
             ))}
             <p className="side__small">
-              Generated from the repository with GitDiagram. It shows structure, not a guarantee that every path is deployed or complete.
+              {project.diagramNote ??
+                'Generated from the repository with GitDiagram. It shows structure, not a guarantee that every path is deployed or complete.'}
             </p>
           </section>
 
@@ -456,6 +460,7 @@ export default function ArchitectureExplorer({ project, onClose }: Props) {
                 <h3>{selectedNode.title}</h3>
                 {selectedNode.file ? <code className="inspector__file">{selectedNode.file}</code> : null}
                 {legendFor(selectedNode.tone) ? <p className="inspector__layer">{legendFor(selectedNode.tone)?.label}</p> : null}
+                {project.nodeNotes?.[selectedNode.id] ? <p className="inspector__note">{project.nodeNotes?.[selectedNode.id]}</p> : null}
                 {connections.out.length ? (
                   <>
                     <h4 className="mono-label">OUTGOING</h4>
@@ -524,19 +529,21 @@ export default function ArchitectureExplorer({ project, onClose }: Props) {
             </section>
           ) : null}
 
-          <section className="side__block">
-            <p className="mono-label">SOURCE FILES</p>
-            <ul className="srclist">
-              {sources.map((s) => (
-                <li key={s.url}>
-                  <Ext href={s.url}>
-                    <span>{s.names.join(' · ')}</span>
-                    <code>{s.path}</code>
-                  </Ext>
-                </li>
-              ))}
-            </ul>
-          </section>
+          {sources.length ? (
+            <section className="side__block">
+              <p className="mono-label">SOURCE FILES</p>
+              <ul className="srclist">
+                {sources.map((s) => (
+                  <li key={s.url}>
+                    <Ext href={s.url}>
+                      <span>{s.names.join(' · ')}</span>
+                      <code>{s.path}</code>
+                    </Ext>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
         </aside>
       </div>
     </div>,

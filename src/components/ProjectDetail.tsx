@@ -25,7 +25,7 @@ export function ProjectDetail({ project }: { project: Project }) {
           <p className="detail__tag">{project.tagline}</p>
           <div className="detail__status">
             <StatusBadge kind={project.status.kind} label={project.status.label} />
-            <RepoMeta repo={project.repoName} />
+            {project.repoName ? <RepoMeta repo={project.repoName} /> : null}
           </div>
 
           <div className="detail__diagram">
@@ -38,9 +38,11 @@ export function ProjectDetail({ project }: { project: Project }) {
             <a className="btn btn--primary" href={hrefs.architecture(project.slug)}>
               <IconGraph /> Explore Architecture
             </a>
-            <Ext className="btn" href={project.repo}>
-              <IconGithub /> View repository <IconArrowUpRight />
-            </Ext>
+            {project.repo ? (
+              <Ext className="btn" href={project.repo}>
+                <IconGithub /> View repository <IconArrowUpRight />
+              </Ext>
+            ) : null}
           </div>
           {project.disclaimer ? <p className="disclaimer">{project.disclaimer}</p> : null}
         </div>
@@ -76,12 +78,14 @@ export function ProjectDetail({ project }: { project: Project }) {
                   <dd>{s.items.join(' · ')}</dd>
                 </div>
               ))}
-              <div>
-                <dt className="mono-label">Repository</dt>
-                <dd>
-                  <Ext href={project.repo}>{project.repo.replace('https://', '')}</Ext>
-                </dd>
-              </div>
+              {project.repo ? (
+                <div>
+                  <dt className="mono-label">Repository</dt>
+                  <dd>
+                    <Ext href={project.repo}>{project.repo.replace('https://', '')}</Ext>
+                  </dd>
+                </div>
+              ) : null}
             </dl>
           </aside>
         </div>

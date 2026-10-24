@@ -155,7 +155,7 @@ export default function InlineDiagram({ project }: { project: Project }) {
         <button type="button" className="btn btn--sm" onClick={fit} disabled={!ready}>
           <IconFit /> Fit
         </button>
-        <span className="toolbar__hint">Architecture generated from the repository · drag to pan</span>
+        <span className="toolbar__hint">Architecture overview · drag to pan</span>
       </div>
       <div
         className="viewport"
@@ -173,11 +173,13 @@ export default function InlineDiagram({ project }: { project: Project }) {
         {status === 'error' ? (
           <div className="stage__msg stage__msg--error" role="alert">
             <p>
-              <strong>The diagram could not be rendered here.</strong> You can still explore the components, or open the repository.
+              <strong>The diagram could not be rendered here.</strong> Open the architecture explorer to browse the components.
             </p>
-            <Ext className="btn btn--primary" href={project.repo}>
-              <IconGithub /> Open {project.repoName} on GitHub <IconArrowUpRight />
-            </Ext>
+            {project.repo ? (
+              <Ext className="btn btn--primary" href={project.repo}>
+                <IconGithub /> Open {project.repoName ?? 'the repository'} on GitHub <IconArrowUpRight />
+              </Ext>
+            ) : null}
           </div>
         ) : null}
         {ready ? (

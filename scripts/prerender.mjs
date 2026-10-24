@@ -151,7 +151,7 @@ ${p.engineeringValue.map((t) => `<li>${esc(t)}</li>`).join('\n')}
 <ul>
 ${p.stack.map((s) => `<li>${esc(s.group)}: ${esc(s.items.join(', '))}</li>`).join('\n')}
 </ul>
-<p>Source code: <a href="${p.repo}">${p.repo.replace('https://', '')}</a></p>
+${p.repo ? `<p>Source code: <a href="${p.repo}">${p.repo.replace('https://', '')}</a></p>` : ''}
 <p><a href="/projects/${p.slug}/architecture">Explore the ${esc(p.shortName)} architecture diagram</a></p>
 ${p.disclaimer ? `<p>${esc(p.disclaimer)}</p>` : ''}
 </main>`;
@@ -164,15 +164,25 @@ ${p.disclaimer ? `<p>${esc(p.disclaimer)}</p>` : ''}
     }),
     body,
     [
-      {
-        '@context': 'https://schema.org',
-        '@type': 'SoftwareSourceCode',
-        name: p.name,
-        description: p.summary,
-        url,
-        codeRepository: p.repo,
-        author: personRef,
-      },
+      p.repo
+        ? {
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareSourceCode',
+            name: p.name,
+            description: p.summary,
+            url,
+            codeRepository: p.repo,
+            author: personRef,
+          }
+        : {
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            applicationCategory: 'BusinessApplication',
+            name: p.name,
+            description: p.summary,
+            url,
+            author: personRef,
+          },
       {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
