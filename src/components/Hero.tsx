@@ -1,4 +1,4 @@
-import { heroCopy, person } from '../data/site';
+import { company, heroCopy, person } from '../data/site';
 import { GITHUB_URL } from '../data/projects';
 import { IconArrowRight, IconGithub, IconMail } from './Icons';
 import { Ext } from './ui';
@@ -21,6 +21,9 @@ export function Hero() {
             DAVID MUUMBI MBUVI
           </p>
           <p className="hero__aka mono-label">David Mbuvi · Mbuvi Tech</p>
+          <p className="hero__aka mono-label">
+            {company.role} · <Ext href={company.url}>{company.name}</Ext>
+          </p>
           <h1>
             I build software that <span className="grad">solves real problems.</span>
           </h1>

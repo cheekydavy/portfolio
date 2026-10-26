@@ -1,13 +1,30 @@
-import { attachment, certifications, person } from '../data/site';
-import { Reveal, SectionHead } from './ui';
+import { attachment, certifications, company, person } from '../data/site';
+import { Ext, Reveal, SectionHead } from './ui';
 
 export function Experience() {
   return (
     <section id="experience" className="section">
       <div className="wrap">
-        <SectionHead index="04" label="EXPERIENCE" title="Industrial attachment." />
+        <SectionHead index="04" label="EXPERIENCE" title="Experience." />
         <Reveal>
           <ol className="timeline">
+            <li className="timeline__item">
+              <span className="timeline__node" aria-hidden="true" />
+              <div className="timeline__card">
+                <p className="mono-label">{company.role.toUpperCase()}</p>
+                <h3>{company.name}</h3>
+                <p className="timeline__lead">
+                  Founder of a Kenyan software and technology company building business software and delivering web, security and network services.
+                </p>
+                <ul className="ticks">
+                  <li>Kensync POS: point-of-sale and business management system with M-Pesa STK Push payments</li>
+                  <li>Custom software, web development, cybersecurity and network solutions</li>
+                  <li>
+                    <Ext href={company.url}>{company.host}</Ext>
+                  </li>
+                </ul>
+              </div>
+            </li>
             <li className="timeline__item">
               <span className="timeline__node" aria-hidden="true" />
               <div className="timeline__card">

@@ -1,6 +1,6 @@
 export const person = {
   name: 'David Muumbi Mbuvi',
-  title: 'Computer Science Student | Software & Systems Developer',
+  title: 'Founder, Kensync Limited | Computer Science Student | Software & Systems Developer',
   university: 'Moi University',
   level: 'Fourth Year · BSc Computer Science',
   email: 'mbuvidavid26@gmail.com',
@@ -9,11 +9,19 @@ export const person = {
   github: 'https://github.com/cheekydavy',
 };
 
+export const company = {
+  name: 'Kensync Limited',
+  role: 'Founder',
+  url: 'https://kensync.co.ke',
+  host: 'kensync.co.ke',
+};
+
 export const heroCopy =
   "I'm a Computer Science student and developer building practical software systems across business applications, AI-assisted learning, mobile development, networking, and backend engineering. I enjoy understanding how complete systems work—from user interfaces and APIs to databases and external integrations.";
 
 export const aboutParagraphs: string[] = [
   "I'm a fourth-year Computer Science student at Moi University. What keeps pulling me toward a project is the seam between components: a checkout that has to agree with stock, a payment that has to be matched to a callback, a command that has to reach the right plugin. I like building the whole path and understanding what each piece is responsible for.",
+  'I am also the founder of Kensync Limited, a Kenyan software and technology company. Its flagship product is Kensync POS, a point-of-sale and business management system, supported by custom software, web development, cybersecurity and network services.',
   'My projects reach across web applications, Java backend services, Node.js applications, Android development with Kotlin, and database-backed systems. They also include AI API integration, WhatsApp automation, offline messaging concepts, POS and business operations, and M-Pesa payment integration.',
   'During a three-month industrial attachment at Infix Africa Limited, I got hands-on exposure to website development, business software including POS and ERP workflows, networking and technical support, and API and payment integration testing. It was where coursework met client sites, hardware and everyday operational constraints.',
 ];

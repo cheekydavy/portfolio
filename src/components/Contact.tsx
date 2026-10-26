@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { GITHUB_URL } from '../data/projects';
-import { person } from '../data/site';
-import { IconCheck, IconCopy, IconGithub, IconMail, IconPhone } from './Icons';
+import { company, person } from '../data/site';
+import { IconArrowRight, IconCheck, IconCopy, IconGithub, IconMail, IconPhone } from './Icons';
 import { Ext, Reveal } from './ui';
 
 export function Contact() {
@@ -54,6 +54,13 @@ export function Contact() {
                 <IconGithub />
                 <span className="mono-label">GITHUB</span>
                 <span className="contact__val">github.com/cheekydavy</span>
+              </Ext>
+            </li>
+            <li>
+              <Ext href={company.url} className="contact__row">
+                <IconArrowRight />
+                <span className="mono-label">KENSYNC</span>
+                <span className="contact__val">{company.host}</span>
               </Ext>
             </li>
           </ul>
